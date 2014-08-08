@@ -1,0 +1,25 @@
+server:
+  applicationConnectors:
+  - type: http
+    port: 9000
+  adminConnectors:
+  - type: http
+    port: 9001
+
+dataSourceFactory:
+  driverClass: net.sourceforge.jtds.jdbc.Driver
+  user: cognos
+  password: cognos
+  url: jdbc:jtds:sqlserver://172.16.1.42/Premier_ACO_POC
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: SELECT 1
+  # The initial size of the connection pool.
+  initialSize: 2
+  # the minimum number of connections to keep open
+  minSize: 2
+  # the maximum number of connections to keep open
+  maxSize: 10
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 60s
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute
