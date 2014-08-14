@@ -124,4 +124,35 @@ public interface ProviderDAO {
 	// @formatter:on
 //	List<TreeViewData> getDepartmentList(@Bind("locationKey") int locationKey);
 	List<TreeViewData> getDepartmentList(@Bind("medicalGroupKey") int medicalGroupKey);
+	
+	/**
+	 * 
+	 * @return list of all the level 20 groups for the passed in level 10 Key. The key is returned in the
+	 *         "use" value and the name is returned in the "display" value.
+	 */
+	@Mapper(Level20Mapper.class)
+	// @formatter:off
+	@SqlQuery("select distinct lvl_20_id, "
+                          + "lvl_20_nm "
+            + "from pract_dim "
+           + "where lvl_20_nm = 'Premier Health ACO' "
+           + "order by lvl_20_nm " )
+	// @formatter:on
+	List<TreeViewData> getLevel20List();
+	
+	/**
+	 * 
+	 * @return list of all the level 20 groups for the passed in level 10 Key. The key is returned in the
+	 *         "use" value and the name is returned in the "display" value.
+	 */
+	@Mapper(Level30Mapper.class)
+	// @formatter:off
+	@SqlQuery("select distinct lvl_30_id, "
+                          + "lvl_30_nm "
+            + "from pract_dim "
+           + "where lvl_20_id = :lvl20id "
+           + "order by lvl_30_nm " )
+	// @formatter:on
+	List<TreeViewData> getLevel30List(@Bind("lvl20id") int lvl20id);
+
 }

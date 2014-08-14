@@ -34,17 +34,17 @@ public class ProviderResource {
 		// providerDAO.getSuperRegionalNetworkList();
 		//
 		// expandProviderHierarchy(superRegionalNetworkList);
-		List<TreeViewData> acoList = providerDAO.getAcoList();
+		List<TreeViewData> lvl20List = providerDAO.getLevel20List();
 
-		expandProviderHierarchy(acoList);
+		expandProviderHierarchy(lvl20List);
 
-		return Response.ok(acoList).build();
+		return Response.ok(lvl20List).build();
 	}
 
 	private void expandProviderHierarchy(List<TreeViewData> treeViewList) {
 		for (Iterator<TreeViewData> iterator = treeViewList.iterator(); iterator.hasNext();) {
 			TreeViewData treeViewData = (TreeViewData) iterator.next();
-			addChildrenToItem(treeViewData, "20");
+			addChildrenToItem(treeViewData, "30");
 		}
 	}
 
@@ -61,7 +61,7 @@ public class ProviderResource {
 			}
 		}
 		else if (level.equals("30")) {
-			childrenToAdd = providerDAO.getDepartmentList(Integer.parseInt(parent.getData().getId()));
+			childrenToAdd = providerDAO.getLevel30List(Integer.parseInt(parent.getData().getId()));
 
 			if (childrenToAdd.size() == 1
 					&& childrenToAdd.get(0).getLabel().equals(parent.getLabel())) {
