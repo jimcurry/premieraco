@@ -5,6 +5,25 @@ server:
   adminConnectors:
   - type: http
     port: 9001
+  requestLog:
+    appenders:
+      - type: file
+        currentLogFilename: premieracoaccess.log
+        threshold: ALL
+        archive: true
+        archivedLogFilenamePattern: premieracoaccess.log.%d.log.gz
+        archivedFileCount: 7
+
+logging:
+  level: INFO
+  appenders:
+    - type: file
+      currentLogFilename: premieraco.log
+      threshold: ALL
+      archive: true
+      archivedLogFilenamePattern: premieraco-%d.log
+      archivedFileCount: 5
+      timeZone: UTC        
 
 dataSourceFactory:
   driverClass: org.netezza.Driver
