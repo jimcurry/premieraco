@@ -6,6 +6,7 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration.Dynamic;
 
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -26,7 +27,8 @@ public class App extends Application<PremierAcoConfiguration> {
 	}
 
 	@Override
-	public void initialize(Bootstrap<PremierAcoConfiguration> b) {
+	public void initialize(Bootstrap<PremierAcoConfiguration> bootstrap) {
+		bootstrap.addBundle(new AssetsBundle());
 	}
 
 	@Override
