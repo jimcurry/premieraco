@@ -142,7 +142,7 @@ public interface ProviderDAO {
 	
 	/**
 	 * 
-	 * @return list of all the level 20 groups for the passed in level 10 Key. The key is returned in the
+	 * @return list of all the level 30 groups for the passed in level 20 Key. The key is returned in the
 	 *         "use" value and the name is returned in the "display" value.
 	 */
 	@Mapper(Level30Mapper.class)
@@ -155,4 +155,19 @@ public interface ProviderDAO {
 	// @formatter:on
 	List<TreeViewData> getLevel30List(@Bind("lvl20id") int lvl20id);
 
+	
+	/**
+	 * 
+	 * @return list of all the Practitioners for the passed in level 30 Key. The key is returned in the
+	 *         "use" value and the name is returned in the "display" value.
+	 */
+	@Mapper(PractitionerMapper.class)
+	// @formatter:off
+	@SqlQuery("select distinct pract_dk, "
+                          + "full_nm "
+            + "from pract_dim "
+           + "where lvl_30_id = :lvl30id "
+           + "order by full_nm " )
+	// @formatter:on
+	List<TreeViewData> getPractitionerList(@Bind("lvl30id") int lvl30id);
 }

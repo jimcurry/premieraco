@@ -65,6 +65,15 @@ public class ProviderResource {
 
 			if (childrenToAdd.size() == 1
 					&& childrenToAdd.get(0).getLabel().equals(parent.getLabel())) {
+				addChildrenToItem(parent, "PRACTITIONER");
+				return;
+			}
+		}
+		else if (level.equals("PRACTITIONER")) {
+			childrenToAdd = providerDAO.getPractitionerList(Integer.parseInt(parent.getData().getId()));
+
+			if (childrenToAdd.size() == 1
+					&& childrenToAdd.get(0).getLabel().equals(parent.getLabel())) {
 				return;
 			}
 		}
@@ -74,6 +83,9 @@ public class ProviderResource {
 
 			if (child.getData().getType().equals("20")) {
 				addChildrenToItem(child, "30");
+			}
+			else if (child.getData().getType().equals("30")) {
+				addChildrenToItem(child, "PRACTITIONER");
 			}
 
 			parent.addChild(child);
