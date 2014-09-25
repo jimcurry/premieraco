@@ -41,7 +41,7 @@ public interface ProviderDAO {
 //			     + "order by AcoName " )
 	@SqlQuery("select distinct lvl_10_id AcoKey, "
 								 + "lvl_10_nm AcoName "
- + "from pract_dim "
+ + "from old_pract_dim "
  + "where lvl_10_id > 0 "
 + "order by lvl_10_nm " )
 	// @formatter:on
@@ -79,7 +79,7 @@ public interface ProviderDAO {
 //		       + "order by MedicalGroupName " )
 	@SqlQuery("select distinct lvl_20_id MedicalGroupKey, "
                            + "lvl_20_nm MedicalGroupName "
-            + "from pract_dim "
+            + "from old_pract_dim "
            + "where lvl_20_id = :acoKey "
            + "order by lvl_20_nm " )
 	// @formatter:on
@@ -118,7 +118,7 @@ public interface ProviderDAO {
 //		       + "order by DepartmentName " )
 	@SqlQuery("select distinct lvl_30_id DepartmentKey, "
                           + "lvl_30_nm DepartmentName "
-            + "from pract_dim "
+            + "from old_pract_dim "
            + "where lvl_30_id = :medicalGroupKey "
            + "order by lvl_30_nm " )
 	// @formatter:on
@@ -134,7 +134,7 @@ public interface ProviderDAO {
 	// @formatter:off
 	@SqlQuery("select distinct lvl_20_id, "
                           + "lvl_20_nm "
-            + "from pract_dim "
+            + "from old_pract_dim "
            + "where lvl_20_nm = 'Premier Health ACO' "
            + "order by lvl_20_nm " )
 	// @formatter:on
@@ -149,7 +149,7 @@ public interface ProviderDAO {
 	// @formatter:off
 	@SqlQuery("select distinct lvl_30_id, "
                           + "lvl_30_nm "
-            + "from pract_dim "
+            + "from old_pract_dim "
            + "where lvl_20_id = :lvl20id "
            + "order by lvl_30_nm " )
 	// @formatter:on
@@ -165,7 +165,7 @@ public interface ProviderDAO {
 	// @formatter:off
 	@SqlQuery("select distinct pract_dk, "
                           + "full_nm "
-            + "from pract_dim "
+            + "from old_pract_dim "
            + "where lvl_30_id = :lvl30id "
            + "order by full_nm " )
 	// @formatter:on
