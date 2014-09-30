@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.lpasystems.premieraco.resources.DateResource;
 import com.lpasystems.premieraco.resources.ProviderResource;
+import com.lpasystems.premieraco.resources.ReportingPeriodResource;
 
 public class App extends Application<PremierAcoConfiguration> {
 	private final static Logger LOGGER = LoggerFactory.getLogger(App.class);
@@ -51,5 +52,6 @@ public class App extends Application<PremierAcoConfiguration> {
 		// Add the resources to the environment
 		environment.jersey().register(new DateResource(jdbi));
 		environment.jersey().register(new ProviderResource(jdbi));
+		environment.jersey().register(new ReportingPeriodResource(jdbi));
 	}
 }

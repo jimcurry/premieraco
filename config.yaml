@@ -2,11 +2,11 @@ server:
   applicationConnectors:
   - type: http
     port: 9010
-  - type: https
-    port: 9000
-    keyStorePath: keystore
-    keyStorePassword: premier1
-    validateCerts: false
+#  - type: https
+#    port: 9000
+#    keyStorePath: keystore
+#    keyStorePassword: premier1
+#    validateCerts: false
   adminConnectors:
   - type: http
     port: 9001

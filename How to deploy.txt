@@ -1,0 +1,6 @@
+To Stop:
+ps -ef | grep jcurry (to get pid)
+kill -2 (SIGINT to stop)
+
+To Start:
+java -jar premieraco-0.0.1.jar server config.yaml &
