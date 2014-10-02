@@ -6,9 +6,16 @@ import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 
-import com.lpasystems.premieraco.mapper.*;
+import com.lpasystems.premieraco.mapper.AcoMapper;
+import com.lpasystems.premieraco.mapper.DepartmentMapper;
+import com.lpasystems.premieraco.mapper.HealthSystemMapper;
+import com.lpasystems.premieraco.mapper.Level20Mapper;
+import com.lpasystems.premieraco.mapper.Level30Mapper;
+import com.lpasystems.premieraco.mapper.LocationMapper;
+import com.lpasystems.premieraco.mapper.MedicalGroupMapper;
+import com.lpasystems.premieraco.mapper.PractitionerMapper;
+import com.lpasystems.premieraco.mapper.SuperRegionalNetworkMapper;
 import com.lpasystems.premieraco.representations.TreeViewData;
-import com.lpasystems.premieraco.representations.UseDisplayValuePair;
 
 public interface ProviderDAO {
 

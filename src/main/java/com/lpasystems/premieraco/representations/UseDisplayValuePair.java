@@ -1,7 +1,7 @@
 package com.lpasystems.premieraco.representations;
 
 /**
- * Used to hold a pair of values, on used for "display" and one "use"d for
+ * Used to hold a pair of values, one used for "display" and one "use"d for
  * internal processing like you might expect for a dropdown, etc.
  * 
  * @author Jim

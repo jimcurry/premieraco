@@ -28,6 +28,9 @@ logging:
       archive: true
       archivedLogFilenamePattern: premieraco-%d.log
       archivedFileCount: 5
+      timeZone: UTC
+    - type: console
+      threshold: ALL
       timeZone: UTC        
 
 dataSourceFactory:
