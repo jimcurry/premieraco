@@ -34,6 +34,8 @@ public class OrganizationResource {
 
 	private final DBI dbi;
 	private final UserDAO userDAO;
+	
+	private int orgSequence = 0;
 
 	public OrganizationResource(DBI jdbi) {
 		this.dbi = jdbi;
@@ -49,7 +51,7 @@ public class OrganizationResource {
 			Map levelRow = (Map) iterator.next();
 			if (levelRow.get("lvl_" + level + "_id") != null) {
 				OrganizationHierarchyData child = new OrganizationHierarchyData((String) levelRow.get("lvl_" + level + "_nm"), level,
-						Integer.toString((Integer) levelRow.get("lvl_" + level + "_id")), parent.getData().getId());
+						Integer.toString((Integer) levelRow.get("lvl_" + level + "_id")), parent.getData().getId(), orgSequence++,  parent.getHierarchyId());
 
 				String nextLevel = String.valueOf(Integer.parseInt(level) + 10);
 
@@ -146,9 +148,13 @@ public class OrganizationResource {
 		Iterator iterator = lvl10Rows.iterator(); iterator.hasNext();) {
 			@SuppressWarnings("rawtypes")
 			Map level10Row = (Map) iterator.next();
+			
+			orgSequence = 0;
+			int originalOrgSequence = orgSequence;
+			
 			OrganizationHierarchyData organizationHierarchyData = new OrganizationHierarchyData((String) level10Row.get("lvl_10_nm"), "10",
 					Integer.toString((Integer) level10Row.get("lvl_10_id")),
-					null);
+					null, orgSequence++, originalOrgSequence);
 			organizationHierarchyList.add(organizationHierarchyData);
 			addChildrenToItem(organizationHierarchyData, "20", userinfo);
 		}

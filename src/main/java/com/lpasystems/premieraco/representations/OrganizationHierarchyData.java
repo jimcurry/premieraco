@@ -11,12 +11,20 @@ import java.util.List;
  */
 public class OrganizationHierarchyData {
 
-	public class Data {
-		private final String type;
+	private final int hierarchyId;
+	
+	private final int parentHierarchyId;
+	
+	private final String label;
 
+	private final Data data;
+
+	public class Data {
 		private final String id;
-		
+
 		private final String parentId;
+
+		private final String type;
 
 		public Data(String type, String id, String parentId) {
 			this.type = type;
@@ -28,19 +36,15 @@ public class OrganizationHierarchyData {
 			return id;
 		}
 
-		public String getType() {
-			return type;
-		}
-		
-
 		public String getParentId() {
 			return parentId;
 		}
+		
+
+		public String getType() {
+			return type;
+		}
 	}
-
-	private final String label;
-
-	private final Data data;
 	
 	private final List<OrganizationHierarchyData> children = new ArrayList<OrganizationHierarchyData>();
 
@@ -50,11 +54,13 @@ public class OrganizationHierarchyData {
 	 * @param label
 	 * @param data
 	 */
-	public OrganizationHierarchyData(String label, String type, String id, String parentId) {
+	public OrganizationHierarchyData(String label, String type, String id, String parentId, int hierarchyId, int parentHierarchyId) {
 		this.label = label;
+		this.hierarchyId = hierarchyId;
+		this.parentHierarchyId = parentHierarchyId;
 		this.data = new Data(type, id, parentId);
 	}
-
+	
 	/**
 	 * Adds a TreeViewData instance to this objects children list.
 	 * 
@@ -78,11 +84,25 @@ public class OrganizationHierarchyData {
 	}
 
 	/**
+	 * @return the hierarchyId
+	 */
+	public int getHierarchyId() {
+		return hierarchyId;
+	}
+
+	/**
 	 * 
 	 * @return the label
 	 */
 	public String getLabel() {
 		return label;
+	}
+
+	/**
+	 * @return the parentHierarchyId
+	 */
+	public int getParentHierarchyId() {
+		return parentHierarchyId;
 	}
 
 }
