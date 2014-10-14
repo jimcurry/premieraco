@@ -1,6 +1,7 @@
 package com.lpasystems.premieraco.resources;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -14,8 +15,10 @@ import javax.ws.rs.core.Response.Status;
 import org.skife.jdbi.v2.DBI;
 
 import com.lpasystems.premieraco.dao.DomainDAO;
+import com.lpasystems.premieraco.dao.ProgramDAO;
 import com.lpasystems.premieraco.dao.UserDAO;
 import com.lpasystems.premieraco.representations.NameIdPair;
+import com.lpasystems.premieraco.representations.Program;
 import com.lpasystems.premieraco.representations.UserInfo;
 
 /**
@@ -24,20 +27,22 @@ import com.lpasystems.premieraco.representations.UserInfo;
  * @author Jim
  *
  */
-@Path("/domain")
+@Path("/program")
 @Produces(MediaType.APPLICATION_JSON)
-public class DomainResource {
+public class ProgramResource {
 	
 	private final UserDAO userDAO;
 	private final DomainDAO domainDAO;
+	private final ProgramDAO programDAO;
 
-	public DomainResource(DBI jdbi) {
+	public ProgramResource(DBI jdbi) {
 		userDAO = jdbi.onDemand(UserDAO.class);
 		domainDAO = jdbi.onDemand(DomainDAO.class);
+		programDAO = jdbi.onDemand(ProgramDAO.class);
 	}
 	
 	/**
-	 * Returns a UserInfo object for the passed in user name
+	 * Returns a Program object for the passed in user name
 	 * 
 	 * @param userName
 	 * @return see above
@@ -46,7 +51,6 @@ public class DomainResource {
 	public Response getUserInfo(@QueryParam("userName") String userName) {
 		
 		// Validate parameters
-		// startMonth
 		List<String> validationMessages = new ArrayList<String>();
 
 		// username
@@ -66,9 +70,21 @@ public class DomainResource {
 			}
 			else {
 				
-				List<NameIdPair> domains = domainDAO.getDomainList(userInfo.getHealthNetworkName());
+				List<Program> programList = new ArrayList<Program>();
+				
+				List<NameIdPair> programs = programDAO.getProgramList(userInfo.getHealthNetworkName());
+				
+				for (@SuppressWarnings("rawtypes")
+				Iterator program = programs.iterator(); program.hasNext();) {
+					NameIdPair nameIdPair = (NameIdPair) program.next();
+					
+					List<NameIdPair> domains = domainDAO.getDomainListByProgramId(Integer.parseInt(nameIdPair.getId()));
+					
+					programList.add(new Program(nameIdPair.getId(), nameIdPair.getName() , domains));
+				}
+				
 
-				return Response.ok(domains).build();
+				return Response.ok(programList).build();
 			}
 		}
 	}

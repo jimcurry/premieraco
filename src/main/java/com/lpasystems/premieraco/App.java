@@ -17,8 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lpasystems.premieraco.resources.DateResource;
-import com.lpasystems.premieraco.resources.DomainResource;
 import com.lpasystems.premieraco.resources.OrganizationResource;
+import com.lpasystems.premieraco.resources.ProgramResource;
 import com.lpasystems.premieraco.resources.ProviderResource;
 import com.lpasystems.premieraco.resources.ReportingPeriodResource;
 import com.lpasystems.premieraco.resources.UserResource;
@@ -49,8 +49,6 @@ public class App extends Application<PremierAcoConfiguration> {
 	   filter.setInitParameter("allowedOrigins", "*");
 	   filter.setInitParameter("allowedHeaders", "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin");
 	   filter.setInitParameter("allowedMethods", "GET,PUT,POST,DELETE,OPTIONS");
-	    //filter.setInitParameter("preflightMaxAge", "5184000"); // 2 months
-	    //filter.setInitParameter("allowCredentials", "true");
 
 		// Add the resources to the environment
 		environment.jersey().register(new DateResource(jdbi));
@@ -58,6 +56,6 @@ public class App extends Application<PremierAcoConfiguration> {
 		environment.jersey().register(new ReportingPeriodResource(jdbi));
 		environment.jersey().register(new UserResource(jdbi));
 		environment.jersey().register(new OrganizationResource(jdbi));
-		environment.jersey().register(new DomainResource(jdbi));
+		environment.jersey().register(new ProgramResource(jdbi));
 	}
 }

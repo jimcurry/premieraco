@@ -8,25 +8,25 @@ import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 import org.skife.jdbi.v2.sqlobject.customizers.OverrideStatementRewriterWith;
 
-import com.lpasystems.premieraco.mapper.DomainMapper;
+import com.lpasystems.premieraco.mapper.ProgramMapper;
 import com.lpasystems.premieraco.representations.NameIdPair;
 
-public interface DomainDAO {
+public interface ProgramDAO {
 
 	/**
-	 * Returns the User Information for the passed in user name
+	 * Returns the Program for the health network name
 	 * 
 	 * @param userName
 	 */
-	@Mapper(DomainMapper.class)
+	@Mapper(ProgramMapper.class)
 	// @formatter:off
 	@OverrideStatementRewriterWith(HashPrefixStatementRewriter.class)
-	@SqlQuery("SELECT dmn_dk " +
-		      ", dmn_nm " +
-		 "FROM dmn_dim " +
-		"where prgm_id = #programId " + 
-		"order by dmn_seq_num "
+	@SqlQuery("SELECT DISTINCT prgm_id " +
+		      ", prgm_nm " +
+		 "FROM prgm_org " +
+		"where pce_cst_nm = #pce_cst_nm " + 
+		"order by prgm_nm "
 		 )
 	// @formatter:on
-	List<NameIdPair> getDomainListByProgramId(@Bind("programId") int programid);
+	List<NameIdPair> getProgramList(@Bind("pce_cst_nm") String pce_cst_nm);
 }

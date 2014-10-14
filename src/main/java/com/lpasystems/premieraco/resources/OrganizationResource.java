@@ -42,7 +42,7 @@ public class OrganizationResource {
 		this.userDAO = jdbi.onDemand(UserDAO.class);
 	}
 
-	private void addChildrenToItem(OrganizationHierarchyData parent, String level, UserInfo userInfo) {
+	private void addChildrenToItem(OrganizationHierarchyData parent, String level, UserInfo userInfo, int programId) {
 		List<Map<String, Object>> lvlRows = getLevelOrgs(userInfo, level, parent.getData().getId());
 
 		for (@SuppressWarnings("rawtypes")
@@ -50,12 +50,15 @@ public class OrganizationResource {
 			@SuppressWarnings("rawtypes")
 			Map levelRow = (Map) iterator.next();
 			if (levelRow.get("lvl_" + level + "_id") != null) {
-				OrganizationHierarchyData child = new OrganizationHierarchyData((String) levelRow.get("lvl_" + level + "_nm"), level,
-						Integer.toString((Integer) levelRow.get("lvl_" + level + "_id")), parent.getData().getId(), orgSequence++,  parent.getHierarchyId());
+				OrganizationHierarchyData child = new OrganizationHierarchyData((String) levelRow.get("lvl_" + level + "_nm"), 
+						level,
+						Integer.toString((Integer) levelRow.get("lvl_" + level + "_id")),
+						parent.getData().getId(), orgSequence++,  parent.getHierarchyId(),
+						programId);
 
 				String nextLevel = String.valueOf(Integer.parseInt(level) + 10);
 
-				addChildrenToItem(child, nextLevel, userInfo);
+				addChildrenToItem(child, nextLevel, userInfo, programId);
 				parent.addChild(child);
 			}
 		}
@@ -64,6 +67,8 @@ public class OrganizationResource {
 	@GET
 	@Path("/hierarchy")
 	public Response getOrganizationHierarchy(@QueryParam("userName") String userName) {
+		this.orgSequence = 0;
+		
 		List<String> validationMessages = new ArrayList<String>();
 
 		// username
@@ -80,10 +85,28 @@ public class OrganizationResource {
 			}
 		}
 		
-		List<OrganizationHierarchyData> organizationHierarchyList = null;
+		List<OrganizationHierarchyData> organizationHierarchyList = new ArrayList<OrganizationHierarchyData>();
 		if (validationMessages.size() == 0) {
 			List<Map<String, Object>> lvl10Rows = getLevelOrgs(userInfo, "10", "*");
-			organizationHierarchyList = expandOrganizationHierarchy(lvl10Rows, userInfo);
+			
+			for (@SuppressWarnings("rawtypes")
+			Iterator lvl10Row = lvl10Rows.iterator(); lvl10Row.hasNext();) {
+				@SuppressWarnings("unchecked")
+				Map<String, Object> map = (Map<String, Object>) lvl10Row.next();
+				Integer lvl10Id = (Integer) map.get("lvl_10_id");
+
+				List<Map<String, Object>> programs = getProgramsForLevel(userInfo, lvl10Id);
+
+				for (@SuppressWarnings("rawtypes")
+				Iterator program = programs.iterator(); program.hasNext();) {
+					@SuppressWarnings("unchecked")
+					Map<String, Object> map2 = (Map<String, Object>) program.next();
+					String prgmNm = (String) map2.get("prgm_nm");
+					int prgmId = ((Integer) map2.get("prgm_id")).intValue();
+					
+					expandOrganizationHierarchy(organizationHierarchyList, lvl10Rows, userInfo, prgmId, prgmNm);
+				}
+			}
 		}
 
 		if (validationMessages.size() > 0) {
@@ -141,25 +164,27 @@ public class OrganizationResource {
 		}
 	}
 
-	private List<OrganizationHierarchyData> expandOrganizationHierarchy(List<Map<String, Object>> lvl10Rows, UserInfo userinfo) {
-		List<OrganizationHierarchyData> organizationHierarchyList = new ArrayList<OrganizationHierarchyData>();
-
+	private void expandOrganizationHierarchy(List<OrganizationHierarchyData> organizationHierarchyList, List<Map<String, Object>> lvl10Rows, UserInfo userinfo, int programId, String programName) {
 		for (@SuppressWarnings("rawtypes")
 		Iterator iterator = lvl10Rows.iterator(); iterator.hasNext();) {
 			@SuppressWarnings("rawtypes")
 			Map level10Row = (Map) iterator.next();
 			
-			orgSequence = 0;
 			int originalOrgSequence = orgSequence;
 			
-			OrganizationHierarchyData organizationHierarchyData = new OrganizationHierarchyData((String) level10Row.get("lvl_10_nm"), "10",
+			String lvl10Nm = programName + " / " + (String) level10Row.get("lvl_10_nm");
+			
+			OrganizationHierarchyData organizationHierarchyData = new OrganizationHierarchyData(
+					lvl10Nm, 
+					"10",
 					Integer.toString((Integer) level10Row.get("lvl_10_id")),
-					null, orgSequence++, originalOrgSequence);
+					null, 
+					orgSequence++,
+					originalOrgSequence,
+					programId);
 			organizationHierarchyList.add(organizationHierarchyData);
-			addChildrenToItem(organizationHierarchyData, "20", userinfo);
+			addChildrenToItem(organizationHierarchyData, "20", userinfo, programId);
 		}
-
-		return organizationHierarchyList;
 	}
 
 	/*
@@ -248,6 +273,8 @@ public class OrganizationResource {
 			if (levelCode.compareTo("90")  >= 0 && userInfo.getLevel90FilterText() != null && !userInfo.getLevel90FilterText().equals("*")) {
 				queryTxt.append("AND lvl_90_id in (" + userInfo.getLevel90FilterText() + ") ");
 			}
+			
+			queryTxt.append("ORDER BY lvl_" + levelCode + "_nm ");
 
 			List<Map<String, Object>> list = h.createQuery(queryTxt.toString())
 					.bind("healthNetworkName", userInfo.getHealthNetworkName())
@@ -337,6 +364,8 @@ public class OrganizationResource {
 				queryTxt.append("AND lvl_90_id in (" + userInfo.getLevel90FilterText() + ") ");
 			}
 
+			queryTxt.append("ORDER BY lvl_" + childLevel + "_nm ");
+			
 			List<Map<String, Object>> list = h.createQuery(queryTxt.toString())
 					.bind("healthNetworkName", userInfo.getHealthNetworkName())
 					.list();
@@ -364,12 +393,12 @@ public class OrganizationResource {
 	 * Returns the level name for that passed in level
 	 * 
 	 * @param levelCode
-	 * @returnt he level name for that passed in level
+	 * @return the level name for that passed in level
 	 */
 	private String getLevelName(UserInfo userInfo, String levelCode) {
 		try (Handle h = dbi.open()) {
 			StringBuilder queryTxt = new StringBuilder(
-					"SELECT lvl_" + levelCode + "_lvl_descr "
+				"SELECT lvl_" + levelCode + "_lvl_descr "
 				+ "FROM org_dim "
 				+ "WHERE rcrd_pce_cst_src_nm = :healthNetworkName ");
 			
@@ -380,5 +409,27 @@ public class OrganizationResource {
 			return levelDesc;
 		}
 	}
-
+	
+	/**
+	 * A list of programs that are associated with the passed in Level 10 Org Id
+	 * 
+	 * @param levelCode
+	 * @return the level name for that passed in level
+	 */
+	private List<Map<String, Object>> getProgramsForLevel(UserInfo userInfo, Integer lvl10OrgId) {
+		try (Handle h = dbi.open()) {
+			StringBuilder queryTxt = new StringBuilder(
+					"SELECT prgm_id, prgm_nm "
+				+ "FROM prgm_org "
+				+ "WHERE pce_cst_nm = :healthNetworkName "
+				+ "and org_dk = :lvl10OrgId "
+				+ "ORDER BY prgm_nm ");
+			
+			List<Map<String, Object>> programList = h.createQuery(queryTxt.toString())
+					.bind("healthNetworkName", userInfo.getHealthNetworkName())
+					.bind("lvl10OrgId", lvl10OrgId)
+					.list();
+			return programList;
+		}
+	}
 }
