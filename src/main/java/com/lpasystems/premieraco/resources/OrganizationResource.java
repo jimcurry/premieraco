@@ -54,7 +54,8 @@ public class OrganizationResource {
 						level,
 						Integer.toString((Integer) levelRow.get("lvl_" + level + "_id")),
 						parent.getData().getId(), orgSequence++,  parent.getHierarchyId(),
-						programId);
+						programId,
+						(String) levelRow.get("lvl_" + level + "_nm"));
 
 				String nextLevel = String.valueOf(Integer.parseInt(level) + 10);
 
@@ -172,16 +173,17 @@ public class OrganizationResource {
 			
 			int originalOrgSequence = orgSequence;
 			
-			String lvl10Nm = programName + " / " + (String) level10Row.get("lvl_10_nm");
+			String lvl10NmPlusProgramName = programName + " / " + (String) level10Row.get("lvl_10_nm");
 			
 			OrganizationHierarchyData organizationHierarchyData = new OrganizationHierarchyData(
-					lvl10Nm, 
+					lvl10NmPlusProgramName, 
 					"10",
 					Integer.toString((Integer) level10Row.get("lvl_10_id")),
 					null, 
 					orgSequence++,
 					originalOrgSequence,
-					programId);
+					programId,
+					(String) level10Row.get("lvl_10_nm"));
 			organizationHierarchyList.add(organizationHierarchyData);
 			addChildrenToItem(organizationHierarchyData, "20", userinfo, programId);
 		}

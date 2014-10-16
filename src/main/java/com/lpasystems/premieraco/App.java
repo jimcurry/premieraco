@@ -20,6 +20,7 @@ import com.lpasystems.premieraco.resources.DateResource;
 import com.lpasystems.premieraco.resources.OrganizationResource;
 import com.lpasystems.premieraco.resources.ProgramResource;
 import com.lpasystems.premieraco.resources.ProviderResource;
+import com.lpasystems.premieraco.resources.ReportInfoResource;
 import com.lpasystems.premieraco.resources.ReportingPeriodResource;
 import com.lpasystems.premieraco.resources.UserResource;
 
@@ -57,5 +58,5 @@ public class App extends Application<PremierAcoConfiguration> {
 		environment.jersey().register(new UserResource(jdbi));
 		environment.jersey().register(new OrganizationResource(jdbi));
 		environment.jersey().register(new ProgramResource(jdbi));
-	}
+		environment.jersey().register(new ReportInfoResource(jdbi));	}
 }

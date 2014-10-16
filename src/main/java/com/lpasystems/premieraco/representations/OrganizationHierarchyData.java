@@ -45,6 +45,8 @@ public class OrganizationHierarchyData {
 	private final int programId;
 
 	private final String label;
+	
+	private final String name;
 
 	private final Data data;
 
@@ -56,11 +58,12 @@ public class OrganizationHierarchyData {
 	 * @param label
 	 * @param data
 	 */
-	public OrganizationHierarchyData(String label, String type, String id, String parentId, int hierarchyId, int parentHierarchyId, int programId) {
+	public OrganizationHierarchyData(String label, String type, String id, String parentId, int hierarchyId, int parentHierarchyId, int programId, String name) {
 		this.label = label;
 		this.hierarchyId = hierarchyId;
 		this.parentHierarchyId = parentHierarchyId;
 		this.programId = programId;
+		this.name = name;
 		this.data = new Data(type, id, parentId);
 	}
 
@@ -99,6 +102,14 @@ public class OrganizationHierarchyData {
 	 */
 	public String getLabel() {
 		return label;
+	}
+	
+	/**
+	 * 
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
 	}
 
 	/**
