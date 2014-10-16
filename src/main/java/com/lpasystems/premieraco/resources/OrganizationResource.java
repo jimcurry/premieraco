@@ -203,79 +203,79 @@ public class OrganizationResource {
 					+ "lvl_" + levelCode + "_nm "
 				+ "FROM org_dim "
 				+ "WHERE rcrd_pce_cst_src_nm = :healthNetworkName ");
-			
-			//Add parent filter
+
+			// Add parent filter
 			if (!parentLevelId.equals("*")) {
-				if (parentLevelId.equals("20")) {
+				if (levelCode.equals("20")) {
 					queryTxt.append("AND lvl_10_id = " + parentLevelId + " ");
 				}
-				
-				if (parentLevelId.equals("30")) {
+
+				if (levelCode.equals("30")) {
 					queryTxt.append("AND lvl_20_id = " + parentLevelId + " ");
 				}
-				
-				if (parentLevelId.equals("40")) {
+
+				if (levelCode.equals("40")) {
 					queryTxt.append("AND lvl_30_id = " + parentLevelId + " ");
 				}
-				
-				if (parentLevelId.equals("50")) {
+
+				if (levelCode.equals("50")) {
 					queryTxt.append("AND lvl_40_id = " + parentLevelId + " ");
 				}
-				
-				if (parentLevelId.equals("60")) {
+
+				if (levelCode.equals("60")) {
 					queryTxt.append("AND lvl_50_id = " + parentLevelId + " ");
 				}
-				
-				if (parentLevelId.equals("70")) {
+
+				if (levelCode.equals("70")) {
 					queryTxt.append("AND lvl_60_id = " + parentLevelId + " ");
 				}
-				
-				if (parentLevelId.equals("80")) {
+
+				if (levelCode.equals("80")) {
 					queryTxt.append("AND lvl_70_id = " + parentLevelId + " ");
 				}
-				
-				if (parentLevelId.equals("90")) {
+
+				if (levelCode.equals("90")) {
 					queryTxt.append("AND lvl_80_id = " + parentLevelId + " ");
 				}
 			}
-			
+
 			//Add in security filter
 			if (userInfo.getLevel10FilterText() != null && !userInfo.getLevel10FilterText().equals("*")) {
 				queryTxt.append("AND lvl_10_id in (" + userInfo.getLevel10FilterText() + ") ");
 			}
-			
+
 			if (levelCode.compareTo("20")  >= 0 && userInfo.getLevel20FilterText() != null && !userInfo.getLevel20FilterText().equals("*")) {
 				queryTxt.append("AND lvl_20_id in (" + userInfo.getLevel20FilterText() + ") ");
 			}
-			
+
 			if (levelCode.compareTo("30")  >= 0 && userInfo.getLevel30FilterText() != null && !userInfo.getLevel30FilterText().equals("*")) {
 				queryTxt.append("AND lvl_30_id in (" + userInfo.getLevel30FilterText() + ") ");
 			}
-			
+
 			if (levelCode.compareTo("40")  >= 0 && userInfo.getLevel40FilterText() != null && !userInfo.getLevel40FilterText().equals("*")) {
 				queryTxt.append("AND lvl_40_id in (" + userInfo.getLevel40FilterText() + ") ");
 			}
-			
+
 			if (levelCode.compareTo("50")  >= 0 && userInfo.getLevel50FilterText() != null && !userInfo.getLevel50FilterText().equals("*")) {
 				queryTxt.append("AND lvl_50_id in (" + userInfo.getLevel50FilterText() + ") ");
 			}
-			
+
 			if (levelCode.compareTo("60")  >= 0 && userInfo.getLevel60FilterText() != null && !userInfo.getLevel60FilterText().equals("*")) {
 				queryTxt.append("AND lvl_60_id in (" + userInfo.getLevel60FilterText() + ") ");
 			}
-			
+
 			if (levelCode.compareTo("70")  >= 0 && userInfo.getLevel70FilterText() != null && !userInfo.getLevel70FilterText().equals("*")) {
 				queryTxt.append("AND lvl_70_id in (" + userInfo.getLevel70FilterText() + ") ");
 			}
-			
+
 			if (levelCode.compareTo("80")  >= 0 && userInfo.getLevel80FilterText() != null && !userInfo.getLevel80FilterText().equals("*")) {
 				queryTxt.append("AND lvl_80_id in (" + userInfo.getLevel80FilterText() + ") ");
 			}
-			
+
 			if (levelCode.compareTo("90")  >= 0 && userInfo.getLevel90FilterText() != null && !userInfo.getLevel90FilterText().equals("*")) {
 				queryTxt.append("AND lvl_90_id in (" + userInfo.getLevel90FilterText() + ") ");
 			}
-			
+
 			queryTxt.append("ORDER BY lvl_" + levelCode + "_nm ");
 
 			List<Map<String, Object>> list = h.createQuery(queryTxt.toString())
