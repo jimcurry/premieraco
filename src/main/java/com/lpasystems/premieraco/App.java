@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lpasystems.premieraco.resources.DateResource;
+import com.lpasystems.premieraco.resources.MeasureResource;
 import com.lpasystems.premieraco.resources.OrganizationResource;
 import com.lpasystems.premieraco.resources.ProgramResource;
 import com.lpasystems.premieraco.resources.ProviderResource;
@@ -58,5 +59,7 @@ public class App extends Application<PremierAcoConfiguration> {
 		environment.jersey().register(new UserResource(jdbi));
 		environment.jersey().register(new OrganizationResource(jdbi));
 		environment.jersey().register(new ProgramResource(jdbi));
-		environment.jersey().register(new ReportInfoResource(jdbi));	}
+		environment.jersey().register(new ReportInfoResource(jdbi));	
+		environment.jersey().register(new MeasureResource(jdbi));	
+	}
 }
