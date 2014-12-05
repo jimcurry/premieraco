@@ -1,6 +1,10 @@
-To Stop:
+To build 
+Run the Premier ACO Build
+This build is a Maven Build configuration with a goal of "package".  And the base directory is the root of the project.
+
+To Stop on the unix machine:
 ps -ef | grep jcurry (to get pid)
 kill -2 (SIGINT to stop)
 
-To Start:
+To Start on the unix machine:
 java -jar premieraco-0.0.1.jar server config.yaml &
