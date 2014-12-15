@@ -8,3 +8,7 @@ kill -2 (SIGINT to stop)
 
 To Start on the unix machine:
 java -jar premieraco-0.0.1.jar server config.yaml &
+
+
+Status page.
+http://c3dupceapr1.premierinc.com:9001/

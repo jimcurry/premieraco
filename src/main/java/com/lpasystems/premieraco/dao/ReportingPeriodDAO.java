@@ -23,14 +23,14 @@ public interface ReportingPeriodDAO {
 	// @formatter:off
 	@OverrideStatementRewriterWith(HashPrefixStatementRewriter.class)
 	@SqlQuery(
-		"SELECT DISTINCT msr_rpt_prd_dk, " +
+		"SELECT DISTINCT mrpd.msr_rpt_prd_dk, " +
 		"        yr_num, " +
 		"        mo_of_yr_nm " +
 		  "FROM msr_rpt_prd_dim mrpd " +
 		       "INNER JOIN cdr_dim cd " +
 		          "ON ( cd.cdr_dk = mrpd.msr_rpt_prd_dk ) " +
-		       "INNER JOIN practitioner_performance_fact ppf " +
-		          "ON ( ppf.performance_reporting_month_dk = mrpd.msr_rpt_prd_dk ) " +
+		       "INNER JOIN pract_perf_msr_fct ppf " +
+		          "ON ( ppf.msr_rpt_prd_dk = mrpd.msr_rpt_prd_dk ) " +
 		 "ORDER BY msr_rpt_prd_dk DESC"
 		)
  	// @formatter:on\
