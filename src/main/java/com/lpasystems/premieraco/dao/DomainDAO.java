@@ -9,14 +9,14 @@ import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 import org.skife.jdbi.v2.sqlobject.customizers.OverrideStatementRewriterWith;
 
 import com.lpasystems.premieraco.mapper.DomainMapper;
-import com.lpasystems.premieraco.representations.NameIdPair;
+import com.lpasystems.premieraco.representations.Domain;
 
 public interface DomainDAO {
 
 	/**
-	 * Returns the User Information for the passed in user name
+	 * Returns the Domain Information for the passed in programId
 	 * 
-	 * @param userName
+	 * @param programId
 	 */
 	@Mapper(DomainMapper.class)
 	// @formatter:off
@@ -28,5 +28,6 @@ public interface DomainDAO {
 		"order by dmn_seq_num "
 		 )
 	// @formatter:on
-	List<NameIdPair> getDomainListByProgramId(@Bind("programId") int programid);
+	List<Domain> getDomainListByProgramId(@Bind("programId") int programid);
+	
 }

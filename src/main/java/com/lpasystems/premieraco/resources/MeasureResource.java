@@ -16,14 +16,10 @@ import javax.ws.rs.core.Response.Status;
 
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
-import org.skife.jdbi.v2.util.StringMapper;
 
 import com.lpasystems.premieraco.dao.UserDAO;
 import com.lpasystems.premieraco.representations.Measure;
-import com.lpasystems.premieraco.representations.OrganizationHierarchyData;
-import com.lpasystems.premieraco.representations.OrganizationLevelList;
 import com.lpasystems.premieraco.representations.UserInfo;
-import com.lpasystems.premieraco.representations.Measure.Range;
 
 /**
  * Resource that returns organization information

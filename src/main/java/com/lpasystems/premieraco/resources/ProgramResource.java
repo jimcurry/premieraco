@@ -15,8 +15,11 @@ import javax.ws.rs.core.Response.Status;
 import org.skife.jdbi.v2.DBI;
 
 import com.lpasystems.premieraco.dao.DomainDAO;
+import com.lpasystems.premieraco.dao.MeasureDAO;
 import com.lpasystems.premieraco.dao.ProgramDAO;
 import com.lpasystems.premieraco.dao.UserDAO;
+import com.lpasystems.premieraco.representations.Domain;
+import com.lpasystems.premieraco.representations.Measure;
 import com.lpasystems.premieraco.representations.NameIdPair;
 import com.lpasystems.premieraco.representations.Program;
 import com.lpasystems.premieraco.representations.UserInfo;
@@ -33,11 +36,13 @@ public class ProgramResource {
 	
 	private final UserDAO userDAO;
 	private final DomainDAO domainDAO;
+	private final MeasureDAO measureDAO;
 	private final ProgramDAO programDAO;
 
 	public ProgramResource(DBI jdbi) {
 		userDAO = jdbi.onDemand(UserDAO.class);
 		domainDAO = jdbi.onDemand(DomainDAO.class);
+		measureDAO = jdbi.onDemand(MeasureDAO.class);
 		programDAO = jdbi.onDemand(ProgramDAO.class);
 	}
 	
@@ -78,7 +83,13 @@ public class ProgramResource {
 				Iterator program = programs.iterator(); program.hasNext();) {
 					NameIdPair nameIdPair = (NameIdPair) program.next();
 					
-					List<NameIdPair> domains = domainDAO.getDomainListByProgramId(Integer.parseInt(nameIdPair.getId()));
+					List<Domain> domains = domainDAO.getDomainListByProgramId(Integer.parseInt(nameIdPair.getId()));
+					
+					for (Iterator<Domain> iterator = domains.iterator(); iterator.hasNext();) {
+						Domain domain = (Domain) iterator.next();
+						List<Measure> measures = measureDAO.getMeasureListByDomainDk(Integer.parseInt(domain.getId()));
+						domain.setMeasures(measures);
+					}
 					
 					programList.add(new Program(nameIdPair.getId(), nameIdPair.getName() , domains));
 				}

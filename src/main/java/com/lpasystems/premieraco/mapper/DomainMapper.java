@@ -6,17 +6,17 @@ import java.sql.SQLException;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
-import com.lpasystems.premieraco.representations.NameIdPair;
+import com.lpasystems.premieraco.representations.Domain;
 
-public class DomainMapper implements ResultSetMapper<NameIdPair> {
+public class DomainMapper implements ResultSetMapper<Domain> {
 	
 	/**
-	 * Creates a UseDisplayValuePair object from database fields
-	 * MonthKey and MonthYear
+	 * Creates a Domain object from database fields
+	 * dmn_nm and dmn_dk
 	 */
 	@Override
-	public NameIdPair map(int index, ResultSet rs,
+	public Domain map(int index, ResultSet rs,
 			StatementContext statementContext) throws SQLException {
-		return new NameIdPair(Integer.toString(rs.getInt("dmn_dk")), rs.getString("dmn_nm"));
+		return new Domain(Integer.toString(rs.getInt("dmn_dk")), rs.getString("dmn_nm"), null);
 	}
 }

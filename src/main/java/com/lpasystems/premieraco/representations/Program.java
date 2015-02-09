@@ -3,7 +3,7 @@ package com.lpasystems.premieraco.representations;
 import java.util.List;
 
 /**
- * Used to hold a set of information about a user
+ * Used to hold a set of information about a Program
  * 
  * @author Jim
  * 
@@ -13,12 +13,12 @@ public class Program {
 
 	private String	programId;
 
-	private List<NameIdPair> domains;
+	private List<Domain> domains;
 
 	/**
 	 * Creates an instance of the class
 	 */
-	public Program(String programId, String programName, List<NameIdPair> domains) {
+	public Program(String programId, String programName, List<Domain> domains) {
 
 		this.programId = programId;
 		this.programName = programName;
@@ -42,7 +42,7 @@ public class Program {
 	/**
 	 * @return the domains
 	 */
-	public List<NameIdPair> getDomains() {
+	public List<Domain> getDomains() {
 		return domains;
 	}
 }
